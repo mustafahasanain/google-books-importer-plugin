@@ -1,0 +1,433 @@
+/**
+ * Google Books Importer - Admin Styles
+ *
+ * @package Google_Books_Importer
+ */
+
+/* General Styles */
+.gbi-settings,
+.gbi-csv-import,
+.gbi-search-import {
+    max-width: 1200px;
+}
+
+/* Settings Page */
+.gbi-image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.gbi-image-upload img {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: #fff;
+}
+
+/* CSV Import Page */
+.gbi-import-section {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.gbi-format-example {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.gbi-format-example h3 {
+    margin-top: 0;
+    color: #23282d;
+}
+
+.gbi-format-example pre {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 12px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: Consolas, Monaco, monospace;
+    border-radius: 3px;
+}
+
+/* Progress Bar */
+.gbi-progress-bar {
+    width: 100%;
+    height: 30px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+    position: relative;
+}
+
+.gbi-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #45a049);
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.gbi-progress-text {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Results Section */
+.gbi-results-summary {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.gbi-success-count {
+    color: #46b450;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0 5px;
+}
+
+.gbi-error-count {
+    color: #dc3232;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0 5px;
+}
+
+.gbi-status-success {
+    color: #46b450;
+    font-weight: bold;
+}
+
+.gbi-status-error {
+    color: #dc3232;
+    font-weight: bold;
+}
+
+.gbi-status-icon {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+/* Search Import Page */
+.gbi-search-section {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.gbi-search-section h2 {
+    margin-top: 0;
+}
+
+.gbi-bulk-actions {
+    background: #f9f9f9;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.gbi-bulk-actions label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gbi-bulk-actions input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Books Grid */
+.gbi-books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Book Card */
+.gbi-book-card {
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gbi-book-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.gbi-book-card.selected {
+    border-color: #2271b1;
+    background: #f0f6fc;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.gbi-book-checkbox {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.gbi-book-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+}
+
+.gbi-book-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 10px 0 8px;
+    line-height: 1.4;
+    height: 42px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: #23282d;
+}
+
+.gbi-book-author {
+    font-size: 13px;
+    color: #666;
+    margin: 5px 0;
+    height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gbi-book-meta {
+    font-size: 12px;
+    color: #999;
+    margin: 5px 0;
+    height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Book Inputs (Price & Quantity) */
+.gbi-book-inputs {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+    display: none;
+}
+
+.gbi-book-card.selected .gbi-book-inputs {
+    display: block;
+}
+
+.gbi-book-inputs label {
+    display: block;
+    margin: 8px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+}
+
+.gbi-book-inputs input {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 4px;
+}
+
+.gbi-book-inputs input:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .gbi-books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .gbi-book-card {
+        padding: 12px;
+    }
+
+    .gbi-book-image {
+        height: 180px;
+    }
+
+    .gbi-book-title {
+        font-size: 13px;
+        height: 38px;
+    }
+
+    .gbi-bulk-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+/* Notices */
+.notice.gbi-notice {
+    margin: 20px 0;
+}
+
+/* Loading States */
+.gbi-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.gbi-loading:before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #2271b1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Buttons */
+.button.button-large.gbi-primary {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 20px;
+    height: auto;
+}
+
+.button.button-large.gbi-primary:hover {
+    background: #135e96;
+    border-color: #135e96;
+}
+
+/* Tables */
+.wp-list-table.gbi-results-table {
+    margin-top: 15px;
+}
+
+.wp-list-table.gbi-results-table td,
+.wp-list-table.gbi-results-table th {
+    padding: 12px;
+}
+
+.wp-list-table.gbi-results-table .button {
+    margin: 0;
+}
+
+/* Empty State */
+.gbi-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.gbi-empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.gbi-empty-state p {
+    font-size: 14px;
+    color: #999;
+}
+
+/* API Test Result */
+#gbi_api_test_result .notice {
+    margin: 10px 0 0;
+    padding: 12px;
+}
+
+/* Import Progress Section */
+#gbi_import_progress,
+#gbi_import_progress_section {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Import Results Table */
+#gbi_import_results,
+#gbi_import_results_section {
+    margin-top: 20px;
+}
+
+#gbi_import_results table,
+#gbi_import_results_section table {
+    margin-top: 15px;
+}
+
+/* Utility Classes */
+.gbi-hidden {
+    display: none !important;
+}
+
+.gbi-text-center {
+    text-align: center;
+}
+
+.gbi-mt-20 {
+    margin-top: 20px;
+}
+
+.gbi-mb-20 {
+    margin-bottom: 20px;
+}
