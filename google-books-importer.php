@@ -171,7 +171,8 @@ function gbi_ajax_import_csv() {
         if ($book_data) {
             $product_data = array_merge($book_data, array(
                 'price'    => $book['price'],
-                'quantity' => $book['quantity']
+                'quantity' => $book['quantity'],
+                'category' => $book['category']
             ));
 
             $result = $creator->create_product($product_data);

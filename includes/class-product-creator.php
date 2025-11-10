@@ -111,10 +111,10 @@ class GBI_Product_Creator {
         $product->set_stock_status($quantity > 0 ? 'instock' : 'outofstock');
 
         // Set SKU from ISBN
-        if (!empty($book_data['isbn'])) {
-            $sku = 'BOOK-' . $book_data['isbn'];
-            $product->set_sku($sku);
-        }
+        // if (!empty($book_data['isbn'])) {
+        //     $sku = 'BOOK-' . $book_data['isbn'];
+        //     $product->set_sku($sku);
+        // }
 
         // Save product to get ID
         $product_id = $product->save();
@@ -128,7 +128,8 @@ class GBI_Product_Creator {
         }
 
         // Add to category
-        $this->assign_category($product_id);
+        $category_name = isset($book_data['category']) ? $book_data['category'] : '';
+        $this->assign_category($product_id, $category_name);
 
         // Add custom fields (meta data)
         $this->update_custom_fields($product_id, $book_data);
@@ -196,6 +197,11 @@ class GBI_Product_Creator {
 
         $product->save();
 
+        // Update category if provided
+        if (isset($book_data['category'])) {
+            $this->assign_category($product_id, $book_data['category']);
+        }
+
         // Update custom fields
         $this->update_custom_fields($product_id, $book_data);
 
@@ -224,31 +230,31 @@ class GBI_Product_Creator {
      */
     private function find_existing_product($book_data) {
         // Try to find by ISBN first (most reliable)
-        if (!empty($book_data['isbn'])) {
-            $sku = 'BOOK-' . $book_data['isbn'];
-            $product_id = wc_get_product_id_by_sku($sku);
-            if ($product_id) {
-                return $product_id;
-            }
+        // if (!empty($book_data['isbn'])) {
+        //     $sku = 'BOOK-' . $book_data['isbn'];
+        //     $product_id = wc_get_product_id_by_sku($sku);
+        //     if ($product_id) {
+        //         return $product_id;
+        //     }
 
-            // Also check by meta field
-            $args = array(
-                'post_type'      => 'product',
-                'posts_per_page' => 1,
-                'post_status'    => 'any',
-                'meta_query'     => array(
-                    array(
-                        'key'   => '_gbi_isbn',
-                        'value' => $book_data['isbn']
-                    )
-                )
-            );
+        //     // Also check by meta field
+        //     $args = array(
+        //         'post_type'      => 'product',
+        //         'posts_per_page' => 1,
+        //         'post_status'    => 'any',
+        //         'meta_query'     => array(
+        //             array(
+        //                 'key'   => '_gbi_isbn',
+        //                 'value' => $book_data['isbn']
+        //             )
+        //         )
+        //     );
 
-            $products = get_posts($args);
-            if (!empty($products)) {
-                return $products[0]->ID;
-            }
-        }
+        //     $products = get_posts($args);
+        //     if (!empty($products)) {
+        //         return $products[0]->ID;
+        //     }
+        // }
 
         // Try to find by exact title match
         if (!empty($book_data['title'])) {
@@ -301,18 +307,50 @@ class GBI_Product_Creator {
     }
 
     /**
-     * Assign product to Books category
+     * Assign product to category (creates category if it doesn't exist)
      *
-     * @param int $product_id Product ID
+     * @param int    $product_id    Product ID
+     * @param string $category_name Category name (supports Arabic)
      */
-    private function assign_category($product_id) {
-        $category_slug = $this->settings['default_category'];
+    private function assign_category($product_id, $category_name = '') {
+        // Use provided category name or default to 'Uncategorized'
+        if (empty($category_name)) {
+            $category_name = 'Uncategorized';
+        }
 
-        // Get category by slug
-        $category = get_term_by('slug', $category_slug, 'product_cat');
+        // Try to get category by name first
+        $category = term_exists($category_name, 'product_cat');
 
-        if ($category) {
-            wp_set_object_terms($product_id, $category->term_id, 'product_cat');
+        if (!$category) {
+            // Category doesn't exist, create it
+            $category = wp_insert_term(
+                $category_name,
+                'product_cat',
+                array(
+                    'slug' => sanitize_title($category_name)
+                )
+            );
+
+            // Check if creation was successful
+            if (is_wp_error($category)) {
+                // If error, try to get by slug as fallback
+                $category = get_term_by('slug', sanitize_title($category_name), 'product_cat');
+                if ($category) {
+                    $category_id = $category->term_id;
+                } else {
+                    // If still fails, return without assigning
+                    return;
+                }
+            } else {
+                $category_id = $category['term_id'];
+            }
+        } else {
+            $category_id = is_array($category) ? $category['term_id'] : $category;
+        }
+
+        // Assign product to category
+        if ($category_id) {
+            wp_set_object_terms($product_id, intval($category_id), 'product_cat');
         }
     }
 

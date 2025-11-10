@@ -17,8 +17,8 @@ class GBI_CSV_Parser {
     /**
      * Parse CSV data
      *
-     * Expected format: "Book Title | Quantity | Price"
-     * Example: "1000 First Words in German | 1 | 16,000 د.ع."
+     * Expected format: "Book Title | Quantity | Price | Category"
+     * Example: "1000 First Words in German | 1 | 16,000 د.ع. | كتب تعليمية و علمية"
      *
      * @param string $csv_data Raw CSV/text data
      * @return array Array of parsed books
@@ -60,12 +60,16 @@ class GBI_CSV_Parser {
         // Split by pipe character
         $parts = array_map('trim', explode('|', $line));
 
-        // Must have exactly 3 parts: title, quantity, price
-        if (count($parts) !== 3) {
+        // Must have at least 3 parts: title, quantity, price
+        // 4th part (category) is optional - defaults to "Uncategorized"
+        if (count($parts) < 3) {
             return false;
         }
 
-        list($title, $quantity, $price) = $parts;
+        $title = $parts[0];
+        $quantity = $parts[1];
+        $price = $parts[2];
+        $category = isset($parts[3]) && !empty($parts[3]) ? $parts[3] : 'Uncategorized';
 
         // Validate title
         if (empty($title)) {
@@ -82,6 +86,7 @@ class GBI_CSV_Parser {
             'title'    => sanitize_text_field($title),
             'quantity' => $quantity,
             'price'    => $price,
+            'category' => sanitize_text_field($category),
             'raw_line' => $line
         );
     }
@@ -207,9 +212,9 @@ class GBI_CSV_Parser {
             }
 
             $parts = explode('|', $line);
-            if (count($parts) !== 3) {
+            if (count($parts) < 3) {
                 $result['errors'][] = sprintf(
-                    __('Line %d: Invalid format. Expected "Title | Quantity | Price"', 'google-books-importer'),
+                    __('Line %d: Invalid format. Expected "Title | Quantity | Price | Category"', 'google-books-importer'),
                     $line_number + 1
                 );
             } else {
@@ -219,7 +224,7 @@ class GBI_CSV_Parser {
 
         if ($valid_lines === 0) {
             $result['valid'] = false;
-            $result['errors'][] = __('No valid book entries found. Please check the format: "Title | Quantity | Price"', 'google-books-importer');
+            $result['errors'][] = __('No valid book entries found. Please check the format: "Title | Quantity | Price | Category"', 'google-books-importer');
         }
 
         return $result;
@@ -231,10 +236,10 @@ class GBI_CSV_Parser {
      * @return string Sample CSV text
      */
     public static function get_sample_format() {
-        return "1000 First Words in German | 1 | 16,000\n" .
-               "101 Video Games to Play Before You Grow Up | 1 | 8,000\n" .
-               "1, 2, 3, Do the Dinosaur | 2 | 4,500\n" .
-               "12th of Never | 1 | 3,000\n" .
-               "30 Book Samples to Change Your Life | 1 | 7,000";
+        return "1000 First Words in German | 1 | 16,000 | كتب تعليمية و علمية\n" .
+               "101 Video Games to Play Before You Grow Up | 1 | 8,000 | ألعاب\n" .
+               "1, 2, 3, Do the Dinosaur | 2 | 4,500 | كتب أطفال\n" .
+               "12th of Never | 1 | 3,000 | روايات\n" .
+               "30 Book Samples to Change Your Life | 1 | 7,000 | تطوير ذات";
     }
 }

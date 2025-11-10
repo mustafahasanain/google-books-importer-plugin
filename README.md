@@ -5,10 +5,12 @@ A powerful WordPress plugin that automatically imports books from the Google Boo
 ## Features
 
 ### 🚀 Dual Import Methods
+
 - **CSV Bulk Import**: Paste a list of books with titles, quantities, and prices - the plugin fetches all book data from Google Books API
 - **Manual Search & Import**: Search Google Books directly, preview results, select books, and import them with custom pricing
 
 ### 📚 Comprehensive Book Data
+
 - Book title, subtitle, and full description (English from Google Books API)
 - Author(s), publisher, and publication date
 - ISBN-10 and ISBN-13
@@ -18,12 +20,14 @@ A powerful WordPress plugin that automatically imports books from the Google Boo
 - Preview and info links
 
 ### 🎨 Smart Image Handling
+
 - Automatically downloads book cover images from Google Books
 - Resizes all images to standard dimensions (configurable)
 - Uses placeholder image for books without covers
 - Custom placeholder upload support
 
 ### 🔧 Advanced Features
+
 - Duplicate detection (by ISBN or title)
 - Choose to skip or update existing products
 - Real-time import progress tracking
@@ -93,11 +97,13 @@ Perfect for importing large lists of books with your own prices.
 
 1. Go to **Books Importer** → **CSV Import**
 2. Prepare your book list in this format:
+
    ```
    Book Title | Quantity | Price
    ```
 
 3. Example:
+
    ```
    1000 First Words in German | 1 | 16000
    101 Video Games to Play Before You Grow Up | 1 | 8000
@@ -112,6 +118,7 @@ Perfect for importing large lists of books with your own prices.
 7. Review the results
 
 **How it works:**
+
 - Plugin searches each title in Google Books API
 - Fetches: description, author, image, ISBN, publisher, etc.
 - Creates WooCommerce product with your price and quantity
@@ -140,16 +147,18 @@ Perfect for carefully selecting specific books.
 Each imported book becomes a WooCommerce product with:
 
 ### Standard WooCommerce Fields
+
 - **Product Name**: Book title
 - **Description**: Full description from Google Books (English)
 - **Short Description**: Auto-generated excerpt
 - **Regular Price**: Your price (from CSV or manual input)
 - **Stock Quantity**: From CSV or manual input
-- **SKU**: Auto-generated from ISBN (format: `BOOK-{ISBN}`)
+<!-- - **SKU**: Auto-generated from ISBN (format: `BOOK-{ISBN}`) -->
 - **Category**: Assigned to "Books" category (or custom)
 - **Featured Image**: Downloaded book cover (or placeholder)
 
 ### Custom Fields (Meta Data)
+
 All stored with `_gbi_` prefix for easy identification:
 
 - `_gbi_google_id`: Google Books volume ID
@@ -171,27 +180,32 @@ All stored with `_gbi_` prefix for easy identification:
 ### API Key Issues
 
 **Problem**: "API key is invalid"
+
 - **Solution**: Double-check your API key in Settings
 - Ensure Google Books API is enabled in Google Cloud Console
 - Check for extra spaces when copying the key
 
 **Problem**: "API quota exceeded"
+
 - **Solution**: Google Books API has daily limits (1000 requests/day for free tier)
 - Wait 24 hours or upgrade your Google Cloud plan
 
 ### Import Issues
 
 **Problem**: "Book not found in Google Books API"
+
 - **Solution**: Try different search terms
 - Some books may not be in Google Books database
 - Try searching by ISBN instead of title
 
 **Problem**: "Image download failed"
+
 - **Solution**: Placeholder image will be used automatically
 - Check your server's outbound connection settings
 - Verify GD library is installed for image processing
 
 **Problem**: "Duplicate book skipped"
+
 - **Solution**: This is expected behavior if "Skip" is selected in settings
 - Change to "Update" in Settings if you want to overwrite
 - Or delete the existing product first
@@ -199,6 +213,7 @@ All stored with `_gbi_` prefix for easy identification:
 ### Performance Issues
 
 **Problem**: Import is slow
+
 - **Solution**: This is normal - each book requires:
   - API request to Google Books
   - Image download and resize
@@ -283,6 +298,7 @@ google-books-importer-plugin/
 ### Filters & Hooks
 
 **Filter product data before creation:**
+
 ```php
 add_filter('gbi_before_create_product', 'custom_modify_product_data', 10, 1);
 function custom_modify_product_data($book_data) {
@@ -292,6 +308,7 @@ function custom_modify_product_data($book_data) {
 ```
 
 **Action after product created:**
+
 ```php
 add_action('gbi_after_product_created', 'custom_after_import', 10, 2);
 function custom_after_import($product_id, $book_data) {
@@ -322,6 +339,7 @@ A: Not built-in, but you can use WordPress cron jobs with custom code.
 ## Changelog
 
 ### Version 1.0.0 (2025)
+
 - Initial release
 - CSV bulk import functionality
 - Manual search and import
